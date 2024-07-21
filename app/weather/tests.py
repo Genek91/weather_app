@@ -1,3 +1,10 @@
-from django.test import TestCase
+import unittest
+from django.test import Client
 
-# Create your tests here.
+
+class WeatherTests(unittest.TestCase):
+
+    def test_get_index(self):
+        client = Client()
+        response = client.get('/')
+        self.assertEqual(response.status_code, 200)
