@@ -15,10 +15,10 @@ def index(request) -> HttpResponse:
     if form.is_valid():
         city = form.cleaned_data.get('name')
 
-        res = requests.get(API_URL.format(city, API_KEY))
+        response = requests.get(API_URL.format(city, API_KEY))
 
-        if 'locations' in res.text:
-            data = res.json()
+        if 'locations' in response.text:
+            data = response.json()
 
             context = {
                 'form': form,
@@ -27,5 +27,7 @@ def index(request) -> HttpResponse:
                     'data': data['locations'][city]['values']
                 }
             }
+        else:
+            context = {'form': CityForm(), 'error': 'Город не найден'}
 
     return render(request, 'weather/index.html', context)

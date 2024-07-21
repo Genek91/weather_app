@@ -19,6 +19,9 @@
           </form>
         </div>
         <div class="col-4 offset-1">
+          {% if error %}
+            <h3 style="color: red;">{{ error }}</h3>
+          {% else %}
           <h3>Город:</h3>
           <ul>
           {{ info.city }}
@@ -32,6 +35,7 @@
           <hr>
           </ul>
           {% endfor %}
+          {% endif %}
         </div>
       </div>
     </div>
