@@ -1,6 +1,7 @@
-from django.shortcuts import render
 import requests
+from django.shortcuts import render
 from weather.forms import CityForm
+
 from app.settings import API_KEY, API_URL
 
 
