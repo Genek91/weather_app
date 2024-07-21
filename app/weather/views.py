@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 import requests
 from django.shortcuts import render
 from weather.forms import CityForm
@@ -5,7 +6,7 @@ from weather.forms import CityForm
 from app.settings import API_KEY, API_URL
 
 
-def index(request):
+def index(request) -> HttpResponse:
     """Главная страница."""
 
     form = CityForm(request.POST or None)
