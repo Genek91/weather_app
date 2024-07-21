@@ -1,3 +1,5 @@
+from http import HTTPStatus
+
 from django.http import HttpResponse
 import requests
 from django.shortcuts import render
@@ -10,24 +12,21 @@ def index(request) -> HttpResponse:
     """Главная страница."""
 
     form = CityForm(request.POST or None)
-    context = {'form': CityForm()}
+    context = {'form': form}
 
     if form.is_valid():
         city = form.cleaned_data.get('name')
 
         response = requests.get(API_URL.format(city, API_KEY))
 
-        if 'locations' in response.text:
+        if response.status_code == HTTPStatus.OK:
             data = response.json()
 
-            context = {
-                'form': form,
-                'info': {
-                    'city': city,
-                    'data': data['locations'][city]['values']
-                }
+            context['info'] = {
+                'city': city,
+                'data': data['locations'][city]['values']
             }
         else:
-            context = {'form': CityForm(), 'error': 'Город не найден'}
+            form.add_error(None, 'Ошибка при запросе к API')
 
     return render(request, 'weather/index.html', context)
